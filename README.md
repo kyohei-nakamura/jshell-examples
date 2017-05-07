@@ -20,7 +20,7 @@ $ cd /opt/redis
 $ sudo make
 ```
 
-1. OpenJDK9をインストールします（JShell利用）
+2. OpenJDK9をインストールします（JShell利用）
 
 ```bash
 $ sudo apt-get install openjdk-9-jdk
@@ -33,7 +33,7 @@ $ sudo update-alternatives --config javac
 $ sudo ln -s /usr/lib/jvm/java-9-openjdk-amd64/bin/jshell jshell
 ```
 
-1. Jedisライブラリをダウンロードします
+3. Jedisライブラリをダウンロードします
 
 ```bash
 $ mkdir -p ~/redis-example/lib
@@ -47,7 +47,7 @@ $ sudo wget http://central.maven.org/maven2/org/apache/commons/commons-pool2/2.4
 ```bash
 $ cd /opt/redis
 $ sudo src/redis-server redis.conf
-# redis.confは必要に応じて修正する。
+# redis.confは必要に応じて修正したものを利用します。
 ```
 
 ## JShell実行
@@ -59,7 +59,7 @@ $ jshell
 |  For an introduction type: /help intro
 ```
 
-1. ライブラリをクラスパスに追加する
+1. ライブラリをクラスパスに追加します
 
 ```java
 -> /classpath lib/jedis-2.9.0.jar
@@ -69,34 +69,38 @@ $ jshell
 |  Path 'lib/commons-pool2-2.4.2.jar' added to classpath
 ```
 
-1. jedisパッケージをインポートする
+2. jedisパッケージをインポートします
 
 ```java
--> import redis.clients.jedis.*
-|    Update modified method printf(String,Object...)
+-> import redis.clients.jedis.Jedis
 ```
 
-1. Jedisインスタンスを生成する
+3. Jedisインスタンスを生成します
 
 ```java
 -> Jedis jedis = new Jedis("localhost");
-|  Added variable jedis of type Jedis with initial value redis.clients.jedis.Jedis@XXXXXXXX
 ```
 
-1. コマンドを発行する
+4. コマンドを発行します
 
 ```java
 -> jedis.set("foo", "bar");
 |  Expression value is: "OK"
-|    assigned to temporary variable $3 of type String
 
--> String value = jedis.get("foo");
-|  Added variable value of type String with initial value "bar"
+-> jedis.get("foo");
+|  Expression value is: "bar"
+|    assigned to temporary variable $5 of type String
+
+-> System.out.println($5)
+bar
 ```
 
-1. JShellを終了する
+5. JShellを終了する
 
 ```java
+-> jedis.flushAll()
+|  Expression value is: "OK"
+
 -> /exit
 |  Goodbye
 ```
